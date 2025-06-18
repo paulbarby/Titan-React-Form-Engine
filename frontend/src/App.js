@@ -72,13 +72,22 @@ const useValidation = (formState, fields) => {
 
   const validateAll = () => {
     const errors = {};
+    console.log('Validating all fields...');
+    console.log('Fields to validate:', fields);
+    console.log('Current form state:', formState);
+    
     fields.forEach(field => {
       const error = validateField(field, formState[field.name]);
       if (error) {
         errors[field.name] = error;
+        console.log(`Validation error for ${field.name}:`, error);
+      } else {
+        console.log(`Field ${field.name} is valid:`, formState[field.name]);
       }
     });
+    
     setFormErrors(errors);
+    console.log('Total validation errors:', errors);
     return Object.keys(errors).length === 0;
   };
 
