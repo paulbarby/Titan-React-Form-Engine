@@ -41,10 +41,11 @@
 }
 
 /* Form validation styles */
-.form-field input.border-red-500,
-.form-field textarea.border-red-500,
-.form-field select.border-red-500 {
-  @apply border-red-500 focus:ring-red-500;
+.form-field input.error-border,
+.form-field textarea.error-border,
+.form-field select.error-border {
+  border-color: #ef4444;
+  @apply focus:ring-red-500;
 }
 
 /* Success message styles */
