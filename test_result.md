@@ -191,9 +191,9 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Form Submission"
+    - ""
   stuck_tasks:
-    - "Form Submission"
+    - ""
   test_all: false
   test_priority: "high_first"
 
