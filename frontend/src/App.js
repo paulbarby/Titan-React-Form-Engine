@@ -44,22 +44,26 @@ const useValidation = (formState, fields) => {
 
     if (!validation) return null;
 
+    // Check if field is required and empty
     if (validation.required && (!value || value.toString().trim() === '')) {
       errors.push(`${fieldDefinition.label} is required`);
     }
 
-    if (value && validation.minLength && value.toString().length < validation.minLength) {
-      errors.push(`${fieldDefinition.label} must be at least ${validation.minLength} characters`);
-    }
+    // Only validate non-empty values for other rules
+    if (value && value.toString().trim() !== '') {
+      if (validation.minLength && value.toString().length < validation.minLength) {
+        errors.push(`${fieldDefinition.label} must be at least ${validation.minLength} characters`);
+      }
 
-    if (value && validation.maxLength && value.toString().length > validation.maxLength) {
-      errors.push(`${fieldDefinition.label} must be no more than ${validation.maxLength} characters`);
-    }
+      if (validation.maxLength && value.toString().length > validation.maxLength) {
+        errors.push(`${fieldDefinition.label} must be no more than ${validation.maxLength} characters`);
+      }
 
-    if (value && validation.pattern) {
-      const regex = new RegExp(validation.pattern);
-      if (!regex.test(value.toString())) {
-        errors.push(`${fieldDefinition.label} format is invalid`);
+      if (validation.pattern) {
+        const regex = new RegExp(validation.pattern);
+        if (!regex.test(value.toString())) {
+          errors.push(`${fieldDefinition.label} format is invalid`);
+        }
       }
     }
 
