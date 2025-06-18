@@ -6,9 +6,10 @@ import os
 import logging
 from pathlib import Path
 from pydantic import BaseModel, Field
-from typing import List
+from typing import List, Dict, Any, Optional, Union
 import uuid
 from datetime import datetime
+from fastapi import HTTPException
 
 
 ROOT_DIR = Path(__file__).parent
