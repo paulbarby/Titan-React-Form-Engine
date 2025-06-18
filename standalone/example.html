@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form-Titan Standalone Example</title>
+    <link rel="stylesheet" href="form-titan.css">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f8fafc;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 16px;
+        }
+        
+        .header h1 {
+            margin: 0 0 10px 0;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        
+        .header p {
+            margin: 0;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .demo-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        @media (max-width: 768px) {
+            .demo-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .demo-section {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .demo-section h2 {
+            margin: 0 0 20px 0;
+            color: #1f2937;
+            font-size: 1.5rem;
+        }
+        
+        .demo-section p {
+            color: #6b7280;
+            margin-bottom: 20px;
+        }
+        
+        .controls {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+        }
+        
+        .controls h3 {
+            margin: 0 0 20px 0;
+            color: #1f2937;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary {
+            background-color: #3b82f6;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2563eb;
+        }
+        
+        .btn-secondary {
+            background-color: #6b7280;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #4b5563;
+        }
+        
+        .btn-success {
+            background-color: #10b981;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background-color: #059669;
+        }
+        
+        .code-block {
+            background: #1f2937;
+            color: #f9fafb;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+        
+        .output {
+            background: #f3f4f6;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        
+        .theme-selector {
+            margin-bottom: 20px;
+        }
+        
+        .theme-selector select {
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            background: white;
+            font-size: 14px;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .status-indicator.green {
+            background-color: #10b981;
+        }
+        
+        .status-indicator.red {
+            background-color: #ef4444;
+        }
+        
+        .status-indicator.yellow {
+            background-color: #f59e0b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Form-Titan Standalone</h1>
+            <p>Pure JavaScript form engine - No React required!</p>
+        </div>
+        
+        <div class="controls">
+            <h3>🎮 Interactive Demo Controls</h3>
+            
+            <div class="theme-selector">
+                <label for="theme-select">Theme: </label>
+                <select id="theme-select">
+                    <option value="default">Default</option>
+                    <option value="dark">Dark</option>
+                    <option value="high-contrast">High Contrast</option>
+                </select>
+            </div>
+            
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="loadContactForm()">Load Contact Form</button>
+                <button class="btn btn-primary" onclick="loadSurveyForm()">Load Survey Form</button>
+                <button class="btn btn-primary" onclick="loadJobApplicationForm()">Load Job Application</button>
+                <button class="btn btn-secondary" onclick="validateForm()">Validate Form</button>
+                <button class="btn btn-secondary" onclick="getFormData()">Get Form Data</button>
+                <button class="btn btn-secondary" onclick="resetForm()">Reset Form</button>
+                <button class="btn btn-success" onclick="populateTestData()">Fill Test Data</button>
+            </div>
+            
+            <div class="output" id="output">
+                <span class="status-indicator green"></span>Ready to load forms...
+            </div>
+        </div>
+        
+        <div class="demo-grid">
+            <div class="demo-section">
+                <h2>📝 Live Form Demo</h2>
+                <p>This form is rendered using pure JavaScript from a JSON definition. Try different forms and themes!</p>
+                
+                <!-- Form will be rendered here -->
+                <div id="form-container"></div>
+            </div>
+            
+            <div class="demo-section">
+                <h2>📊 Form Analytics</h2>
+                <p>Real-time form state and interaction data:</p>
+                
+                <div id="analytics">
+                    <h4>Form State:</h4>
+                    <pre id="form-state">{}</pre>
+                    
+                    <h4>Validation Errors:</h4>
+                    <pre id="form-errors">{}</pre>
+                    
+                    <h4>Events Log:</h4>
+                    <div id="events-log" style="height: 200px; overflow-y: auto; background: #f9fafb; padding: 10px; border-radius: 6px; font-family: monospace; font-size: 12px;"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="demo-section">
+            <h2>💻 Code Example</h2>
+            <p>Here's how easy it is to create a form with Form-Titan Standalone:</p>
+            
+            <div class="code-block">
+// Create a form engine instance
+const formEngine = FormTitan.create('form-container', {
+    theme: 'default',
+    validateOnChange: true,
+    apiUrl: '/api' // Optional: for real API integration
+});
+
+// Load form from JSON definition
+formEngine.loadForm(formDefinition);
+
+// Listen to form events
+formEngine.on('fieldChange', ({ fieldName, value }) => {
+    console.log(`${fieldName} changed to:`, value);
+});
+
+formEngine.on('formSubmitted', ({ formData, result }) => {
+    console.log('Form submitted successfully:', result);
+});
+            </div>
+        </div>
+    </div>
+
+    <script src="form-titan.js"></script>
+    <script>
+        // Sample form definitions
+        const contactFormDefinition = {
+            "formId": "contact-us-standalone",
+            "name": "Contact Us",
+            "description": "Get in touch with us!",
+            "config": { "mode": "input" },
+            "fields": [
+                {
+                    "id": "first_name",
+                    "name": "first_name",
+                    "type": "text",
+                    "label": "First Name",
+                    "placeholder": "Enter your first name",
+                    "validation": { "required": true, "minLength": 2 }
+                },
+                {
+                    "id": "last_name", 
+                    "name": "last_name",
+                    "type": "text",
+                    "label": "Last Name",
+                    "placeholder": "Enter your last name",
+                    "validation": { "required": true, "minLength": 2 }
+                },
+                {
+                    "id": "email",
+                    "name": "email",
+                    "type": "email",
+                    "label": "Email Address",
+                    "placeholder": "your.email@example.com",
+                    "validation": { "required": true }
+                },
+                {
+                    "id": "phone",
+                    "name": "phone",
+                    "type": "tel",
+                    "label": "Phone Number",
+                    "placeholder": "+1 (555) 123-4567",
+                    "validation": { "required": false }
+                },
+                {
+                    "id": "subject",
+                    "name": "subject",
+                    "type": "select",
+                    "label": "Subject",
+                    "options": [
+                        { "label": "General Inquiry", "value": "general" },
+                        { "label": "Technical Support", "value": "support" },
+                        { "label": "Sales Question", "value": "sales" },
+                        { "label": "Feedback", "value": "feedback" }
+                    ],
+                    "validation": { "required": true }
+                },
+                {
+                    "id": "message",
+                    "name": "message",
+                    "type": "textarea",
+                    "label": "Message",
+                    "placeholder": "How can we help you?",
+                    "validation": { "required": true, "minLength": 10 }
+                },
+                {
+                    "id": "newsletter",
+                    "name": "newsletter",
+                    "type": "checkbox",
+                    "label": "Subscribe to newsletter",
+                    "options": [
+                        { "label": "Yes, I'd like to receive updates and news", "value": "yes" }
+                    ]
+                }
+            ],
+            "layoutDefinition": {
+                "id": "root",
+                "component": "container",
+                "element": "div",
+                "attributes": { "className": "form-card" },
+                "children": [
+                    {
+                        "id": "header",
+                        "component": "container",
+                        "element": "div",
+                        "attributes": { "className": "form-section-header" },
+                        "children": []
+                    },
+                    {
+                        "id": "name_row",
+                        "component": "container",
+                        "element": "div",
+                        "attributes": { "className": "form-grid form-grid-cols-2" },
+                        "children": [
+                            { "id": "first_name_field", "component": "field", "fieldId": "first_name" },
+                            { "id": "last_name_field", "component": "field", "fieldId": "last_name" }
+                        ]
+                    },
+                    { "id": "email_field", "component": "field", "fieldId": "email" },
+                    { "id": "phone_field", "component": "field", "fieldId": "phone" },
+                    { "id": "subject_field", "component": "field", "fieldId": "subject" },
+                    { "id": "message_field", "component": "field", "fieldId": "message" },
+                    { "id": "newsletter_field", "component": "field", "fieldId": "newsletter" }
+                ]
+            }
+        };
+
+        const surveyFormDefinition = {
+            "formId": "customer-survey",
+            "name": "Customer Satisfaction Survey",
+            "description": "Help us improve our service",
+            "config": { "mode": "input" },
+            "fields": [
+                {
+                    "id": "customer_type",
+                    "name": "customer_type",
+                    "type": "radio",
+                    "label": "What type of customer are you?",
+                    "options": [
+                        { "label": "New customer", "value": "new" },
+                        { "label": "Returning customer", "value": "returning" },
+                        { "label": "Long-time customer", "value": "longtime" }
+                    ],
+                    "validation": { "required": true }
+                },
+                {
+                    "id": "satisfaction_rating",
+                    "name": "satisfaction_rating",
+                    "type": "select",
+                    "label": "Overall satisfaction rating",
+                    "options": [
+                        { "label": "1 - Very Dissatisfied", "value": "1" },
+                        { "label": "2 - Dissatisfied", "value": "2" },
+                        { "label": "3 - Neutral", "value": "3" },
+                        { "label": "4 - Satisfied", "value": "4" },
+                        { "label": "5 - Very Satisfied", "value": "5" }
+                    ],
+                    "validation": { "required": true }
+                },
+                {
+                    "id": "improvement_areas",
+                    "name": "improvement_areas",
+                    "type": "checkbox",
+                    "label": "What areas could we improve? (Select all that apply)",
+                    "options": [
+                        { "label": "Customer service", "value": "service" },
+                        { "label": "Product quality", "value": "quality" },
+                        { "label": "Pricing", "value": "pricing" },
+                        { "label": "Delivery speed", "value": "delivery" },
+                        { "label": "Website experience", "value": "website" }
+                    ]
+                },
+                {
+                    "id": "recommend_likelihood",
+                    "name": "recommend_likelihood",
+                    "type": "select",
+                    "label": "How likely are you to recommend us? (0-10)",
+                    "options": [
+                        { "label": "0 - Not at all likely", "value": "0" },
+                        { "label": "1", "value": "1" },
+                        { "label": "2", "value": "2" },
+                        { "label": "3", "value": "3" },
+                        { "label": "4", "value": "4" },
+                        { "label": "5", "value": "5" },
+                        { "label": "6", "value": "6" },
+                        { "label": "7", "value": "7" },
+                        { "label": "8", "value": "8" },
+                        { "label": "9", "value": "9" },
+                        { "label": "10 - Extremely likely", "value": "10" }
+                    ],
+                    "validation": { "required": true }
+                },
+                {
+                    "id": "feedback",
+                    "name": "feedback",
+                    "type": "textarea",
+                    "label": "Additional feedback",
+                    "placeholder": "Please share any additional thoughts...",
+                    "validation": { "required": false }
+                }
+            ],
+            "layoutDefinition": {
+                "id": "root",
+                "component": "container",
+                "element": "div", 
+                "attributes": { "className": "form-card" },
+                "children": [
+                    {
+                        "id": "header",
+                        "component": "container",
+                        "element": "div",
+                        "attributes": { "className": "form-section-header" },
+                        "children": []
+                    },
+                    { "id": "customer_type_field", "component": "field", "fieldId": "customer_type" },
+                    { "id": "satisfaction_field", "component": "field", "fieldId": "satisfaction_rating" },
+                    { "id": "improvement_field", "component": "field", "fieldId": "improvement_areas" },
+                    { "id": "recommend_field", "component": "field", "fieldId": "recommend_likelihood" },
+                    { "id": "feedback_field", "component": "field", "fieldId": "feedback" }
+                ]
+            }
+        };
+
+        const jobApplicationDefinition = {
+            "formId": "job-application",
+            "name": "Job Application",
+            "description": "Apply for a position with us",
+            "config": { "mode": "input" },
+            "fields": [
+                {
+                    "id": "full_name",
+                    "name": "full_name",
+                    "type": "text",
+                    "label": "Full Name",
+                    "placeholder": "Enter your full name",
+                    "validation": { "required": true, "minLength": 2 }
+                },
+                {
+                    "id": "email",
+                    "name": "email",
+                    "type": "email",
+                    "label": "Email Address",
+                    "placeholder": "your.email@example.com",
+                    "validation": { "required": true }
+                },
+                {
+                    "id": "position",
+                    "name": "position",
+                    "type": "select",
+                    "label": "Position Applied For",
+                    "options": [
+                        { "label": "Frontend Developer", "value": "frontend" },
+                        { "label": "Backend Developer", "value": "backend" },
+                        { "label": "Full Stack Developer", "value": "fullstack" },
+                        { "label": "UI/UX Designer", "value": "designer" },
+                        { "label": "Product Manager", "value": "pm" }
+                    ],
+                    "validation": { "required": true }
+                },
+                {
+                    "id": "experience",
+                    "name": "experience",
+                    "type": "radio",
+                    "label": "Years of Experience",
+                    "options": [
+                        { "label": "0-1 years (Entry Level)", "value": "entry" },
+                        { "label": "2-5 years (Mid Level)", "value": "mid" },
+                        { "label": "5+ years (Senior Level)", "value": "senior" }
+                    ],
+                    "validation": { "required": true }
+                },
+                {
+                    "id": "remote_work",
+                    "name": "remote_work",
+                    "type": "checkbox",
+                    "label": "Work Preferences",
+                    "options": [
+                        { "label": "Open to remote work", "value": "remote" },
+                        { "label": "Available for travel", "value": "travel" },
+                        { "label": "Flexible schedule", "value": "flexible" }
+                    ]
+                },
+                {
+                    "id": "start_date",
+                    "name": "start_date",
+                    "type": "date",
+                    "label": "Earliest Start Date",
+                    "validation": { "required": true }
+                },
+                {
+                    "id": "cover_letter",
+                    "name": "cover_letter",
+                    "type": "textarea",
+                    "label": "Cover Letter",
+                    "placeholder": "Tell us why you're interested in this position...",
+                    "validation": { "required": true, "minLength": 50 }
+                }
+            ],
+            "layoutDefinition": {
+                "id": "root",
+                "component": "container",
+                "element": "div",
+                "attributes": { "className": "form-card" },
+                "children": [
+                    {
+                        "id": "header",
+                        "component": "container",
+                        "element": "div",
+                        "attributes": { "className": "form-section-header" },
+                        "children": []
+                    },
+                    { "id": "full_name_field", "component": "field", "fieldId": "full_name" },
+                    { "id": "email_field", "component": "field", "fieldId": "email" },
+                    {
+                        "id": "job_details",
+                        "component": "container",
+                        "element": "div",
+                        "attributes": { "className": "form-grid form-grid-cols-2" },
+                        "children": [
+                            { "id": "position_field", "component": "field", "fieldId": "position" },
+                            { "id": "start_date_field", "component": "field", "fieldId": "start_date" }
+                        ]
+                    },
+                    { "id": "experience_field", "component": "field", "fieldId": "experience" },
+                    { "id": "remote_work_field", "component": "field", "fieldId": "remote_work" },
+                    { "id": "cover_letter_field", "component": "field", "fieldId": "cover_letter" }
+                ]
+            }
+        };
+
+        // Global form engine instance
+        let formEngine = null;
+        let eventsLog = [];
+
+        // Initialize form engine
+        function initializeFormEngine() {
+            if (formEngine) {
+                formEngine.destroy();
+            }
+            
+            const theme = document.getElementById('theme-select').value;
+            formEngine = FormTitan.create('form-container', {
+                theme: theme,
+                validateOnChange: true,
+                resetOnSubmit: false,
+                showLoadingStates: true
+            });
+
+            // Set up event listeners
+            setupEventListeners();
+        }
+
+        function setupEventListeners() {
+            if (!formEngine) return;
+
+            formEngine.on('formLoaded', (definition) => {
+                logEvent('✅ Form loaded', definition.name);
+                updateAnalytics();
+            });
+
+            formEngine.on('fieldChange', ({ fieldName, value, formData }) => {
+                logEvent('📝 Field changed', `${fieldName} = ${JSON.stringify(value)}`);
+                updateAnalytics();
+            });
+
+            formEngine.on('validationChange', ({ fieldName, error }) => {
+                if (error) {
+                    logEvent('❌ Validation error', `${fieldName}: ${error}`);
+                } else {
+                    logEvent('✅ Validation passed', fieldName);
+                }
+                updateAnalytics();
+            });
+
+            formEngine.on('formSubmitted', ({ formData, result }) => {
+                logEvent('🚀 Form submitted', 'Success!');
+                updateOutput('Form submitted successfully! Check console for details.');
+                console.log('Form submitted:', { formData, result });
+            });
+
+            formEngine.on('error', ({ message, error }) => {
+                logEvent('💥 Error', message);
+                updateOutput(`Error: ${message}`, 'error');
+            });
+        }
+
+        function updateAnalytics() {
+            if (!formEngine) return;
+
+            const formData = formEngine.getFormData();
+            const formState = document.getElementById('form-state');
+            if (formState) {
+                formState.textContent = JSON.stringify(formData, null, 2);
+            }
+
+            // Note: In the standalone version, we don't have direct access to errors
+            // This would require extending the engine to expose error state
+            const formErrors = document.getElementById('form-errors');
+            if (formErrors) {
+                formErrors.textContent = '{}';
+            }
+        }
+
+        function logEvent(type, details) {
+            const timestamp = new Date().toLocaleTimeString();
+            eventsLog.unshift(`[${timestamp}] ${type}: ${details}`);
+            
+            // Keep only last 50 events
+            if (eventsLog.length > 50) {
+                eventsLog = eventsLog.slice(0, 50);
+            }
+            
+            const eventsElement = document.getElementById('events-log');
+            if (eventsElement) {
+                eventsElement.innerHTML = eventsLog.join('\n');
+            }
+        }
+
+        function updateOutput(message, type = 'info') {
+            const output = document.getElementById('output');
+            const statusClass = type === 'error' ? 'red' : type === 'success' ? 'green' : 'yellow';
+            output.innerHTML = `<span class="status-indicator ${statusClass}"></span>${message}`;
+        }
+
+        // Form control functions
+        function loadContactForm() {
+            initializeFormEngine();
+            formEngine.loadForm(contactFormDefinition);
+            updateOutput('Contact form loaded successfully!', 'success');
+        }
+
+        function loadSurveyForm() {
+            initializeFormEngine();
+            formEngine.loadForm(surveyFormDefinition);
+            updateOutput('Survey form loaded successfully!', 'success');
+        }
+
+        function loadJobApplicationForm() {
+            initializeFormEngine();
+            formEngine.loadForm(jobApplicationDefinition);
+            updateOutput('Job application form loaded successfully!', 'success');
+        }
+
+        function validateForm() {
+            if (!formEngine) {
+                updateOutput('No form loaded!', 'error');
+                return;
+            }
+            
+            const isValid = formEngine.validate();
+            updateOutput(`Form validation: ${isValid ? 'PASSED' : 'FAILED'}`, isValid ? 'success' : 'error');
+            logEvent('🔍 Manual validation', isValid ? 'Passed' : 'Failed');
+        }
+
+        function getFormData() {
+            if (!formEngine) {
+                updateOutput('No form loaded!', 'error');
+                return;
+            }
+            
+            const data = formEngine.getFormData();
+            updateOutput('Form data retrieved (check console)', 'success');
+            console.log('Current form data:', data);
+            logEvent('📋 Data retrieved', Object.keys(data).length + ' fields');
+        }
+
+        function resetForm() {
+            if (!formEngine) {
+                updateOutput('No form loaded!', 'error');
+                return;
+            }
+            
+            formEngine.resetForm();
+            updateOutput('Form reset successfully!', 'success');
+            updateAnalytics();
+        }
+
+        function populateTestData() {
+            if (!formEngine) {
+                updateOutput('No form loaded!', 'error');
+                return;
+            }
+
+            // Get current form definition to determine what test data to use
+            const formId = formEngine.formDefinition?.formId;
+            let testData = {};
+
+            switch (formId) {
+                case 'contact-us-standalone':
+                    testData = {
+                        first_name: 'John',
+                        last_name: 'Doe',
+                        email: 'john.doe@example.com',
+                        phone: '+1 (555) 123-4567',
+                        subject: 'general',
+                        message: 'This is a test message for the contact form.',
+                        newsletter: ['yes']
+                    };
+                    break;
+                    
+                case 'customer-survey':
+                    testData = {
+                        customer_type: 'returning',
+                        satisfaction_rating: '4',
+                        improvement_areas: ['service', 'website'],
+                        recommend_likelihood: '8',
+                        feedback: 'Great service overall, but could improve response times.'
+                    };
+                    break;
+                    
+                case 'job-application':
+                    testData = {
+                        full_name: 'Jane Smith',
+                        email: 'jane.smith@example.com',
+                        position: 'frontend',
+                        experience: 'mid',
+                        remote_work: ['remote', 'flexible'],
+                        start_date: '2024-02-01',
+                        cover_letter: 'I am excited to apply for the Frontend Developer position. With 3 years of experience in React and modern web technologies, I believe I would be a great fit for your team.'
+                    };
+                    break;
+                    
+                default:
+                    updateOutput('No test data available for this form', 'error');
+                    return;
+            }
+
+            formEngine.setFormData(testData);
+            updateOutput('Test data populated successfully!', 'success');
+            updateAnalytics();
+            logEvent('🧪 Test data', 'Populated');
+        }
+
+        // Theme change handler
+        document.getElementById('theme-select').addEventListener('change', function() {
+            if (formEngine) {
+                initializeFormEngine();
+                // Reload the current form if one was loaded
+                if (formEngine.formDefinition) {
+                    const currentDefinition = formEngine.formDefinition;
+                    formEngine.loadForm(currentDefinition);
+                }
+            }
+        });
+
+        // Initialize with contact form on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadContactForm();
+            logEvent('🎉 Demo initialized', 'Ready to explore Form-Titan!');
+        });
+    </script>
+</body>
+</html>
