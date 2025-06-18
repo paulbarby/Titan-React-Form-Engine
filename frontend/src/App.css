@@ -1,38 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .App {
-    text-align: center;
+  text-align: left;
 }
 
-.App-logo {
-    height: 40vmin;
-    pointer-events: none;
+.form-field {
+  @apply mb-4;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-    .App-logo {
-        animation: App-logo-spin infinite 20s linear;
-    }
+/* Custom form styles */
+.form-field input:focus,
+.form-field textarea:focus,
+.form-field select:focus {
+  @apply ring-2 ring-blue-500 ring-opacity-50;
 }
 
-.App-header {
-    background-color: #0f0f10;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
+/* Loading animation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
-.App-link {
-    color: #61dafb;
+.animate-spin {
+  animation: spin 1s linear infinite;
 }
 
-@keyframes App-logo-spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+/* Responsive design */
+@media (max-width: 768px) {
+  .grid-cols-1.md\:grid-cols-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 768px) {
+  .md\:grid-cols-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Form validation styles */
+.form-field input.border-red-500,
+.form-field textarea.border-red-500,
+.form-field select.border-red-500 {
+  @apply border-red-500 focus:ring-red-500;
+}
+
+/* Success message styles */
+.success-message {
+  @apply bg-green-50 border border-green-200 text-green-700 p-4 rounded-md;
+}
+
+.error-message {
+  @apply bg-red-50 border border-red-200 text-red-700 p-4 rounded-md;
 }
