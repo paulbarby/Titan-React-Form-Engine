@@ -66,7 +66,7 @@ That's it! Your form will automatically load and render based on the JSON config
 | [🎨 Customization Guide](./docs/CUSTOMIZATION_GUIDE.md) | Adding custom fields and validation rules |
 | [📚 API Documentation](./docs/API_DOCUMENTATION.md) | Backend API endpoints and data models |
 | [💡 Examples](./docs/EXAMPLES.md) | Form examples and JSON schemas |
-| [🔧 Configuration](./docs/CONFIGURATION.md) | Environment setup and configuration options |
+| [⚙️ Configuration](./docs/CONFIGURATION.md) | Environment setup and configuration options |
 
 ## 🎬 Live Demo
 
