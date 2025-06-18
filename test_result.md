@@ -152,11 +152,11 @@ frontend:
 
   - task: "Form Submission"
     implemented: true
-    working: false
+    working: true
     file: "/app/frontend/src/App.js"
     stuck_count: 1
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
         -working: "NA"
         -agent: "testing"
@@ -164,6 +164,9 @@ frontend:
         -working: false
         -agent: "testing"
         -comment: "Form submission is not working correctly. When submitting a valid form, the success message is not displayed. There appears to be an issue with the dropdown selection for Preferred Contact Method, which might be preventing successful form submission."
+        -working: true
+        -agent: "testing"
+        -comment: "Form submission is now working correctly. Successfully filled out the form with valid data including selecting 'Email' from the Preferred Contact Method dropdown. Upon submission, the form data was validated, submitted to the backend, and a success message was displayed: 'Your submission has been received successfully!'. Console logs confirm all fields were properly validated and the submission was successful."
 
   - task: "Responsive Design"
     implemented: true
