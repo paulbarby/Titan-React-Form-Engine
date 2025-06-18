@@ -344,11 +344,16 @@ const FormEngine = ({ formId, initialMode = 'input' }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
+    console.log('Form submission started');
+    console.log('Current form state:', formState);
+    
     if (!validateAll()) {
+      console.log('Validation failed:', formErrors);
       setSubmitMessage('Please fix the errors above');
       return;
     }
 
+    console.log('Validation passed, submitting form');
     setIsSubmitting(true);
     setSubmitMessage('');
 
@@ -357,12 +362,15 @@ const FormEngine = ({ formId, initialMode = 'input' }) => {
         data: formState
       });
       
+      console.log('Submission successful:', response.data);
       setSubmitMessage(response.data.message);
+      
       // Reset form
       Object.keys(formState).forEach(key => {
         updateFieldValue(key, '');
       });
     } catch (err) {
+      console.error('Submission error:', err);
       setSubmitMessage(err.response?.data?.detail || 'Submission failed. Please try again.');
     } finally {
       setIsSubmitting(false);
